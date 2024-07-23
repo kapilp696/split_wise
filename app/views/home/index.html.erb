@@ -1,24 +1,38 @@
-<nav class="navbar navbar-expand-lg bg">
-  <div class="container-fluid">
-    <a class="navbar-brand text-white" href="#">Splitwise</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <%# <div class="profile-pic">
-                <img src="https://source.unsplash.com/250x250?girl" alt="Profile Picture">
-            </div> %>
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Your Account</a></li>
-            <li><a class="dropdown-item" href="#">Create a group</a></li>
-            <li><a class="dropdown-item" href="#">Log out</a></li>
-          </ul>
-        </li>
-      </ul>
+<%= render "shared/navbar" %>
+
+<div class="h-100 mh-100 p-0 w-100 d-flex ms-auto justify-content-center" id="center_container">
+  <div class="border-left border-right border-info shadow-sm w-75 d-flex " id="center_bars">
+    <%# left sidebar %>
+    <div class="position-relative w-25 float-left z-3" id="left_sidebar">
+      <div class="text-start overflow-hidden m-2" id="view_links">
+        <%= link_to "Dashboard", root_path, class: "d-block text-decoration-none p-2 text-dark" %>
+        <%= link_to "Recent Activity", root_path, class: "d-block text-decoration-none p-2 text-dark" %>
+        <%= link_to "All Expenses", root_path, class: "d-block text-decoration-none p-2 text-dark" %>
+        <div class="header">Groups</div>
+        <%# <% current_user.groups.each do |group| %>
+        <% @groups.all.each do |group| %>      
+          <%= link_to group.name, group %>
+        <% end %>
+        <div class="border border-secondary">
+          <div class="p-2 border border-secondary" style="background-color: #5bc5a7;">Invite friends</div>
+          <form class="row d-flex justify-content-center align-items-center">
+            <div class="col-lg m-2">
+              <input type="email" class="form-control" placeholder="Enter an email"><br>
+            </div>
+            <button type="button" class="btn btn-md w-75 mb-2 rounded border" style="background-color: #5bc5a7;">Send invite</button>
+          </form>
+        </div> 
+      </div>
+    </div>
+
+    <%# center column %>
+    <div class="position-relative mh-auto m-0 w-50 border border-secondary" id="center_column">
+      <%= render @expenses %>
+    </div>
+
+    <%# right sidebar %>
+    <div class="position-relative float-right z-3 w-25 bg-primary" id="right_sidebar" style="margin-right: -201px;">
+      right sidebar
     </div>
   </div>
-</nav>  
+</div>
