@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_22_101043) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_23_031451) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,8 +22,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_22_101043) do
     t.bigint "expense_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "settled", default: false
     t.index ["expense_id"], name: "index_debts_on_expense_id"
     t.index ["group_id"], name: "index_debts_on_group_id"
+  end
+
+  create_table "expense_payers", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "expense_id", null: false
+    t.decimal "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["expense_id"], name: "index_expense_payers_on_expense_id"
+    t.index ["user_id"], name: "index_expense_payers_on_user_id"
   end
 
   create_table "expenses", force: :cascade do |t|
@@ -68,6 +79,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_22_101043) do
   add_foreign_key "debts", "groups"
   add_foreign_key "debts", "users", column: "from_user_id"
   add_foreign_key "debts", "users", column: "to_user_id"
+  add_foreign_key "expense_payers", "expenses"
+  add_foreign_key "expense_payers", "users"
   add_foreign_key "expenses", "groups"
   add_foreign_key "expenses", "users"
   add_foreign_key "group_memberships", "groups"

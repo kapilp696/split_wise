@@ -1,0 +1,49 @@
+<h1><%= @user.email %></h1>
+
+<h2>Borrowed Amount</h2>
+<p><%= number_to_currency(@total_borrowed) %></p>
+
+<h2>Lent Amount</h2>
+<p><%= number_to_currency(@total_lent) %></p>
+
+<h2>Detailed Debts and Credits</h2>
+<table>
+  <thead>
+    <tr>
+      <th>From</th>
+      <th>To</th>
+      <th>Amount</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @debts.each do |debt| %>
+      <tr>
+        <td><%= debt.from_user.email %></td>
+        <td><%= debt.to_user.email %></td>
+        <td><%= number_to_currency(debt.amount) %></td>
+        <td>
+          <% unless debt.settled %>
+            <%= link_to 'Settle', settle_debt_path(debt), method: :patch, data: { confirm: 'Are you sure?' } %>
+          <% else %>
+            Settled
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    <% @credits.each do |credit| %>
+      <tr>
+        <td><%= credit.from_user.email %></td>
+        <td><%= credit.to_user.email %></td>
+        <td><%= number_to_currency(credit.amount) %></td>
+        <td>
+          <% unless credit.settled %>
+            <%= link_to 'Settle', settle_debt_path(credit), method: :patch, data: { confirm: 'Are you sure?' } %>
+          <% else %>
+            Settled
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
