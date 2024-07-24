@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   def send_invite
     recipient_email = params[:email]
     InviteNotificationMailer.invite_email(recipient_email, current_user).deliver_now
-    redirect_to root_path, notice: 'Invite sent!'
+    redirect_to root_path, notice: '!'
   end
 
   private

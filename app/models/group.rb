@@ -1,10 +1,9 @@
 class Group < ApplicationRecord
-  has_many :group_memberships
+  has_many :group_memberships, dependent: :destroy
   has_many :users, through: :group_memberships
 
   has_many :debts
   has_many :expenses, dependent: :destroy
-
 
   def calculate_debts
     debts = Hash.new(0)

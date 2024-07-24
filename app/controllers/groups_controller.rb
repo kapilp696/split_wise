@@ -1,7 +1,6 @@
 class GroupsController < ApplicationController
-  before_action :authenticate_user!
   before_action :set_group, only: [:show, :edit, :update, :destroy]
-  before_action :authorize_user!, only: [:show, :edit, :update, :destroy]
+
   def index
     @groups = current_user.groups
   end
@@ -11,16 +10,12 @@ class GroupsController < ApplicationController
   end
 
   def new
-    @group = Group.new
+    @group = current_user.groups.build
   end
 
   def create
-    @group = Group.new(group_params)
-    @group.creator = current_user
-
-    if @group.save
-      @group.users << current_user  # Automatically add the creator to the group
-      redirect_to @group, notice: 'Group was successfully created.'
+    if current_user.groups.create(group_params)
+      redirect_to groups_path, notice: 'Group was successfully created.'
     else
       render :new
     end
@@ -48,6 +43,6 @@ class GroupsController < ApplicationController
   end
 
   def group_params
-    params.require(:group).permit(:name, user_ids: [])
+    params.require(:group).permit(:name)
   end
 end

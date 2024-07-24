@@ -5,43 +5,28 @@
     <%# left sidebar %>
     <div class="position-relative w-25 float-left z-3" id="left_sidebar">
       <div class="text-start overflow-hidden m-2" id="view_links">
-        <%= link_to "Dashboard", root_path, class: "d-block text-decoration-none p-2 text-dark" %>
-        <%= link_to "Recent Activity", root_path, class: "d-block text-decoration-none p-2 text-dark" %>
-        <%= link_to "All Expenses", root_path, class: "d-block text-decoration-none p-2 text-dark" %>
-        <div class="header">Groups</div>
-        <%# <% current_user.groups.each do |group| %>
-        <% @groups.all.each do |group| %>      
-          <%= link_to group.name, group %>
-        <% end %>
-        <%# <div class="border border-secondary">
+        <%= link_to "Dashboard", root_path, class: "d-block text-decoration-none p-2 text-dark border-light" %>
+        <%= link_to "Recent Activity", root_path, class: "d-block text-decoration-none p-2 text-dark border-light" %>
+        <%= link_to "All Expenses", root_path, class: "d-block text-decoration-none p-2 text-dark border-light" %>
+        <div class="tags text-md m-1">
+          <div class="header fw-bold fs-5">Groups</div>
+          <% if current_user.groups.any? %>
+            <% current_user.groups.each do |group| %>
+              <%= link_to group.name, group_expenses_path(group), class: "d-block overflow-hidden text-decoration-none p-2 text-dark border border-light" %>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="border border-secondary">
           <div class="p-2 border border-secondary" style="background-color: #5bc5a7;">Invite friends</div>
-          <form class="row d-flex justify-content-center align-items-center">
-            <div class="col-lg m-2">
-              <input type="email" class="form-control" placeholder="Enter an email"><br>
+          <%= form_with url: send_invite_path, method: :post do |form| %>
+            <div class="row d-flex justify-content-center align-items-center">
+              <div class="col-lg m-2">
+                <%= form.email_field :email, required: true, class: "form-control", placeholder: "Enter an email" %>
+              </div>
+              <%= form.submit 'Send Invite', class: "btn btn-md w-75 mb-2 rounded border", style: "background-color: #5bc5a7;" %>
             </div>
-            <button type="button" class="btn btn-md w-75 mb-2 rounded border" style="background-color: #5bc5a7;">Send invite</button>
-          </form>
-        </div>  %>
-
-
-<div class="border border-secondary">
-  <div class="p-2 border border-secondary" style="background-color: #5bc5a7;">Invite friends</div>
-  <%= form_with url: send_invite_path, method: :post do |form| %>
-    <div class="row d-flex justify-content-center align-items-center">
-      <div class="col-lg m-2">
-        <%= form.email_field :email, required: true, class: "form-control", placeholder: "Enter an email" %>
-      </div>
-      <%= form.submit 'Send Invite', class: "btn btn-md w-75 mb-2 rounded border", style: "background-color: #5bc5a7;" %>
-    </div>
-  <% end %>
-</div>
-
-
-
-
-
-
-
+          <% end %>
+        </div>
       </div>
     </div>
 
