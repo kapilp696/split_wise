@@ -1,6 +1,5 @@
-<h1>New Expense for <%= @group.name %></h1>
-
-<%= form_with(model: [@group, @expense], local: true) do |form| %>
+<!-- app/views/expenses/_form.html.erb -->
+<%= form_with(model: [(@group || @expense), @expense], local: true) do |form| %>
   <% if @expense.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@expense.errors.count, "error") %> prohibited this expense from being saved:</h2>
@@ -14,27 +13,31 @@
   <% end %>
 
   <div class="field">
+    <%= form.label :amount %>
+    <%= form.number_field :amount, step: :any %>
+  </div>
+
+  <div class="field">
     <%= form.label :description %>
     <%= form.text_field :description %>
   </div>
 
   <div class="field">
-    <%= form.label :amount %>
-    <%= form.number_field :amount %>
+    <%= form.label :group_id %>
+    <%= form.collection_select :group_id, Group.all, :id, :name, include_blank: true %>
   </div>
 
   <h3>Expense Payers</h3>
-  <% @users.each do |user| %>
-    <div class="field">
-      <%= label_tag "expense_payers_#{user.id}_amount", user.email %>
-      <%= number_field_tag "expense_payers[][user_id]", user.id, type: 'hidden' %>
-      <%= number_field_tag "expense_payers[][amount]" %>
+  <div id="expense_payers">
+    <%= form.fields_for :expense_payers do |expense_payer_fields| %>
+      <%= render 'expense_payer_fields', f: expense_payer_fields %>
+    <% end %>
+    <div class="links">
+      <%= link_to_add_association 'Add Payer', form, :expense_payers %>
     </div>
-  <% end %>
+  </div>
 
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
-
-<%= link_to 'Back', group_expenses_path(@group) %>

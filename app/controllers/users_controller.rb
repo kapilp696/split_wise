@@ -8,6 +8,12 @@ class UsersController < ApplicationController
     @credits = @user.credits
   end
 
+  def send_invite
+    recipient_email = params[:email]
+    InviteNotificationMailer.invite_email(recipient_email).deliver_now
+    redirect_to root_path, notice: 'Invite sent!'
+  end
+
   private
 
   def set_user

@@ -3,7 +3,7 @@ class Group < ApplicationRecord
   has_many :users, through: :group_memberships
 
   has_many :debts
-  has_many :expenses
+  has_many :expenses, dependent: :destroy
 
 
   def calculate_debts

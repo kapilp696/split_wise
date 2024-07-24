@@ -9,16 +9,26 @@ class ExpensesController < ApplicationController
   def show; end
 
   def new
-    @expense = @group.expenses.build
-    @users = @group.users
+    # @expense = @group.expenses.build
+    # @users = @group.users
+    @expense = Expense.new
+    @expense.expense_payers.build
+    @users = @group.present? ? @group.users : User.all
   end
 
   def create
-    @expense = @group.expenses.build(expense_params)
+    # @expense = @group.expenses.build(expense_params)
 
+    # if @expense.save
+    #   process_payments(@expense, params[:expense_payers])
+    #   redirect_to group_expenses_path(@group), notice: 'Expense was successfully created.'
+    # else
+    #   render :new
+    # end
+    @expense = current_user.expenses.build(expense_params)
     if @expense.save
-      process_payments(@expense, params[:expense_payers])
-      redirect_to group_expenses_path(@group), notice: 'Expense was successfully created.'
+      create_debts
+      redirect_to @expense, notice: 'Expense was successfully created.'
     else
       render :new
     end
@@ -42,7 +52,7 @@ class ExpensesController < ApplicationController
   private
 
   def set_group
-    @group = Group.find(params[:group_id])
+    @group = Group.find(params[:group_id]) if params[:group_id]
   end
 
   def set_expense
@@ -50,7 +60,31 @@ class ExpensesController < ApplicationController
   end
 
   def expense_params
-    params.require(:expense).permit(:description, :amount)
+    # params.require(:expense).permit(:description, :amount)
+    params.require(:expense).permit(:amount, :description, :group_id, expense_payers_attributes: [:id, :user_id, :amount, :_destroy])
+  end
+
+  def create_debts
+    total_amount = @expense.amount
+    paid_amount = @expense.expense_payers.sum(&:amount)
+    debt_amount = total_amount - paid_amount
+
+    # Get all users involved in the expense
+    involved_users = @expense.expense_payers.map(&:user)
+    
+    # Calculate equal share for those who haven't paid
+    remaining_users = @group.present? ? @group.users - involved_users : User.all - involved_users
+    share_per_user = debt_amount / remaining_users.count
+
+    remaining_users.each do |user|
+      Debt.create!(
+        group: @expense.group,
+        expense: @expense,
+        from_user: user,
+        to_user: current_user,
+        amount: share_per_user
+      )
+    end
   end
 
   def process_payments(expense, payers_params)

@@ -1,0 +1,10 @@
+<!-- app/views/expenses/_expense_payer_fields.html.erb -->
+<div class="nested-fields">
+  <%= f.label :user_id %>
+  <%= f.collection_select :user_id, @users, :id, :email %>
+
+  <%= f.label :amount %>
+  <%= f.number_field :amount, step: :any %>
+
+  <%= link_to_remove_association "Remove Payer", f %>
+</div>

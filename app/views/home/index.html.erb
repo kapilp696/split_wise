@@ -20,6 +20,24 @@
               <input type="email" class="form-control" placeholder="Enter an email"><br>
             </div>
             <button type="button" class="btn btn-md w-75 mb-2 rounded border" style="background-color: #5bc5a7;">Send invite</button>
+
+
+<%= form_with url: send_invite_path, method: :post do |form| %>
+  <div class="field">
+    <%= form.label :email, 'Recipient Email' %>
+    <%= form.email_field :email, required: true %>
+  </div>
+  <div class="actions">
+    <%= form.submit 'Send Invite' %>
+  </div>
+<% end %>
+
+
+
+
+
+
+
           </form>
         </div> 
       </div>

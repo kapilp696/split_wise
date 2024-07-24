@@ -4,8 +4,10 @@ Rails.application.routes.draw do
   root to: "home#index"
 
   resources :groups do
-    resources :expenses
+    resources :expenses, only: [:new, :create, :index]
   end
+
+  resources :expenses, except: [:new, :create, :index]
 
   resources :users, only: [:show]
 
@@ -14,6 +16,8 @@ Rails.application.routes.draw do
       patch :settle
     end
   end
+
+  post 'send_invite', to: 'users#send_invite'
 
   # root to: "groups#index"
 
