@@ -13,33 +13,35 @@
         <% @groups.all.each do |group| %>      
           <%= link_to group.name, group %>
         <% end %>
-        <div class="border border-secondary">
+        <%# <div class="border border-secondary">
           <div class="p-2 border border-secondary" style="background-color: #5bc5a7;">Invite friends</div>
           <form class="row d-flex justify-content-center align-items-center">
             <div class="col-lg m-2">
               <input type="email" class="form-control" placeholder="Enter an email"><br>
             </div>
             <button type="button" class="btn btn-md w-75 mb-2 rounded border" style="background-color: #5bc5a7;">Send invite</button>
-
-
-<%= form_with url: send_invite_path, method: :post do |form| %>
-  <div class="field">
-    <%= form.label :email, 'Recipient Email' %>
-    <%= form.email_field :email, required: true %>
-  </div>
-  <div class="actions">
-    <%= form.submit 'Send Invite' %>
-  </div>
-<% end %>
-
-
-
-
-
-
-
           </form>
-        </div> 
+        </div>  %>
+
+
+<div class="border border-secondary">
+  <div class="p-2 border border-secondary" style="background-color: #5bc5a7;">Invite friends</div>
+  <%= form_with url: send_invite_path, method: :post do |form| %>
+    <div class="row d-flex justify-content-center align-items-center">
+      <div class="col-lg m-2">
+        <%= form.email_field :email, required: true, class: "form-control", placeholder: "Enter an email" %>
+      </div>
+      <%= form.submit 'Send Invite', class: "btn btn-md w-75 mb-2 rounded border", style: "background-color: #5bc5a7;" %>
+    </div>
+  <% end %>
+</div>
+
+
+
+
+
+
+
       </div>
     </div>
 

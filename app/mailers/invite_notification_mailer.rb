@@ -5,7 +5,9 @@ class InviteNotificationMailer < ApplicationMailer
   #
   #   en.invite_notification_mailer.invite_email.subject
   #
-  def invite_email
-    mail to: "to@example.org", subject: "#{current_user.email} wants to share bills with you on Splitwise!"
+  def invite_email (recipient_email, current_user)
+    @recipient_email = recipient_email
+    @current_user = current_user
+    mail to: @recipient_email, subject: "#{@current_user.email} wants to share bills with you on Splitwise!"
   end
 end
