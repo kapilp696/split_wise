@@ -7,6 +7,11 @@ Rails.application.routes.draw do
   root to: "home#index"
 
   resources :groups do
+    member do
+      get 'manage_members'
+      post 'add_members'
+      delete 'remove_member'
+    end
     resources :expenses, only: [:new, :create, :index]
   end
 

@@ -5,6 +5,9 @@ class Group < ApplicationRecord
   has_many :debts
   has_many :expenses, dependent: :destroy
 
+  # accepts_nested_attributes_for :users, allow_destroy: true
+  accepts_nested_attributes_for :group_memberships, allow_destroy: true
+
   def calculate_debts
     debts = Hash.new(0)
 

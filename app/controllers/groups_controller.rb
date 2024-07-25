@@ -1,5 +1,6 @@
 class GroupsController < ApplicationController
-  before_action :set_group, only: [:show, :edit, :update, :destroy]
+  before_action :set_group
+  # before_action :set_group, only: [:show, :edit, :update, :destroy]
 
   def index
     @groups = current_user.groups
@@ -21,7 +22,8 @@ class GroupsController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+  end
 
   def update
     if @group.update(group_params)
@@ -36,6 +38,25 @@ class GroupsController < ApplicationController
     redirect_to groups_url, notice: 'Group was successfully destroyed.'
   end
 
+  def manage_members
+    @users = User.all
+    @group
+  end
+
+  def add_members
+    user_ids = params[:user_ids] || []
+    user_ids.each do |user_id|
+      @group.group_memberships.create(user_id: user_id)
+    end
+    redirect_to @group, notice: 'Members were successfully added.'
+  end
+
+  def remove_member
+    membership = @group.group_memberships.find_by(user_id: params[:user_id])
+    membership.destroy if membership
+    redirect_to manage_members_group_path(@group), notice: 'Member was successfully removed.'
+  end
+
   private
 
   def set_group
@@ -43,6 +64,8 @@ class GroupsController < ApplicationController
   end
 
   def group_params
+    # params.require(:group).permit(:name, group_memberships_attributes: [:id, :user_id])
     params.require(:group).permit(:name)
+
   end
 end
