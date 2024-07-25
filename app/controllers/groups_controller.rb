@@ -1,13 +1,12 @@
 class GroupsController < ApplicationController
-  before_action :set_group
-  # before_action :set_group, only: [:show, :edit, :update, :destroy]
+  # before_action :set_group
+  before_action :set_group, only: [:show, :edit, :update, :destroy, :manage_members, :add_members, :remove_member]
 
   def index
     @groups = current_user.groups
   end
 
   def show
-    @debts = @group.calculate_debts
   end
 
   def new
@@ -48,7 +47,7 @@ class GroupsController < ApplicationController
     user_ids.each do |user_id|
       @group.group_memberships.create(user_id: user_id)
     end
-    redirect_to @group, notice: 'Members were successfully added.'
+    redirect_to manage_members_group_path(@group), notice: 'Members were successfully added.'
   end
 
   def remove_member

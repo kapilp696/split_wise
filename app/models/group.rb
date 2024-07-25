@@ -5,30 +5,7 @@ class Group < ApplicationRecord
   has_many :debts
   has_many :expenses, dependent: :destroy
 
-  # accepts_nested_attributes_for :users, allow_destroy: true
   accepts_nested_attributes_for :group_memberships, allow_destroy: true
-
-  def calculate_debts
-    debts = Hash.new(0)
-
-    expenses.each do |expense|
-      total_amount = expense.amount
-      total_payers_amount = expense.expense_payers.sum(:amount)
-      split_amount = (total_amount - total_payers_amount) / (users.count - expense.expense_payers.size)
-
-      expense.expense_payers.each do |payer|
-        amount_paid = payer.amount
-        users.each do |user|
-          next if user == payer.user
-
-          debts[[payer.user, user]] += split_amount
-          debts[[user, payer.user]] -= split_amount
-        end
-      end
-    end
-
-    debts
-  end
 
   def settle_debts
     debts = calculate_debts

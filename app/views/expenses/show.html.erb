@@ -1,0 +1,6 @@
+Paid by: <%= @expense.user.email %><br>
+Paid amount: <%= @expense.amount %><br>
+Splitted among: <br>
+<% @expense.group.users.each do |user| %>
+  <%= user.email %><br>
+<% end %>

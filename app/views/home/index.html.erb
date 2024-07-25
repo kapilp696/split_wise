@@ -12,7 +12,7 @@
           <div class="header fw-bold fs-5">Groups</div>
           <% if current_user.groups.any? %>
             <% current_user.groups.each do |group| %>
-              <%= link_to group.name, group_expenses_path(group), class: "d-block overflow-hidden text-decoration-none p-2 text-dark border border-light" %>
+            <%= link_to group.name, group_expenses_path(group), class: "d-block overflow-hidden text-decoration-none p-2 text-dark border border-light" %>
             <% end %>
           <% end %>
         </div>
@@ -32,7 +32,7 @@
 
     <%# center column %>
     <div class="position-relative mh-auto m-0 w-50 border border-secondary" id="center_column">
-      <%= render @expenses %>
+      center column
     </div>
 
     <%# right sidebar %>

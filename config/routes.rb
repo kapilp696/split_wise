@@ -10,9 +10,10 @@ Rails.application.routes.draw do
     member do
       get 'manage_members'
       post 'add_members'
-      delete 'remove_member'
+      delete 'remove_member/:user_id', to: "groups#remove_member", as: :remove_member
+      # delete 'remove_member'
     end
-    resources :expenses, only: [:new, :create, :index]
+    resources :expenses, only: [:new, :create, :index, :show]
   end
 
   resources :expenses, except: [:new, :create, :index]

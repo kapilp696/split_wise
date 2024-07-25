@@ -1,10 +1,12 @@
-<!-- app/views/expenses/_expense_payer_fields.html.erb -->
+
+
+
 <div class="nested-fields">
-  <%= f.label :user_id %>
-  <%= f.collection_select :user_id, @group.users, :id, :email %>
-
-  <%= f.label :amount %>
-  <%= f.number_field :amount, step: :any %>
-
-  <%# <%= link_to_remove_association "Remove Payer", f %> %>
+  <% @group.users.each do |user| %>
+    <div>
+      <%= check_box_tag "expense[expense_payers_attributes][#{user.id}][user_id]", user.id, false, id: "expense_payer_#{user.id}" %>
+      <%= label_tag "expense_payer_#{user.id}", user.email %>
+      <%= number_field_tag "expense[expense_payers_attributes][#{user.id}][amount]", nil, placeholder: "Amount", id: "expense_payer_amount_#{user.id}" %>
+    </div>
+  <% end %>
 </div>

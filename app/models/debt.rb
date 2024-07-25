@@ -6,4 +6,5 @@ class Debt < ApplicationRecord
 
     # Default value for settled
   attribute :settled, :boolean, default: false
+
 end

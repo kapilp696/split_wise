@@ -6,18 +6,18 @@ class ExpensesController < ApplicationController
     @expenses = @group.expenses
   end
 
-  def show; end
+  def show
+  end
 
   def new
     @expense = @group.expenses.build
-    @expense.expense_payers.build
   end
 
   def create
     @expense = @group.expenses.build(expense_params)
 
     if @expense.save
-      process_payments(@expense, params[:expense_payers])
+      handle_debts(@expense)
       redirect_to group_expenses_path(@group), notice: 'Expense was successfully created.'
     else
       render :new
@@ -50,40 +50,29 @@ class ExpensesController < ApplicationController
   end
 
   def expense_params
-    # params.require(:expense).permit(:description, :amount)
-    params.require(:expense).permit(:amount, :description, :group_id, expense_payers_attributes: [:id, :user_id, :amount])
+    params.require(:expense).permit(:amount, :description, :user_id)
   end
 
-  def create_debts
-    total_amount = @expense.amount
-    paid_amount = @expense.expense_payers.sum(&:amount)
-    debt_amount = total_amount - paid_amount
 
-    # Get all users involved in the expense
-    involved_users = @expense.expense_payers.map(&:user)
+  def handle_debts(expense)
+    users = expense.group.users
+    share_per_user = expense.amount/users.count
 
-    # Calculate equal share for those who haven't paid
-    remaining_users = @group.present? ? @group.users - involved_users : User.all - involved_users
-    share_per_user = debt_amount / remaining_users.count
-
-    remaining_users.each do |user|
-      Debt.create!(
-        group: @expense.group,
-        expense: @expense,
-        from_user: user,
-        to_user: current_user,
-        amount: share_per_user
-      )
-    end
-  end
-
-  def process_payments(expense, payers_params)
-    payers_params.each do |payer|
-      ExpensePayer.create!(
-        user_id: payer[:user_id],
-        expense_id: expense.id,
-        amount: payer[:amount].to_d
-      )
+    users.each do |user|
+      next if user==expense.user
+      debt = Debt.find_by(group: expense.group, from_user: user, to_user: expense.user)
+      if debt
+        if debt.amount > 0 && debt.amount>=share_per_user
+          debt.amount -= share_per_user
+        end
+        debt.expense_id=expense.id
+        debt.save!
+      else
+        debt = Debt.new(group: expense.group, from_user: user, to_user: expense.user)
+        debt.amount += share_per_user
+        debt.expense_id=expense.id
+        debt.save!
+      end
     end
   end
 end
