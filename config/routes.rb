@@ -22,7 +22,7 @@ Rails.application.routes.draw do
 
   resources :debts, only: [] do
     member do
-      patch :settle
+      get :settle
     end
   end
 

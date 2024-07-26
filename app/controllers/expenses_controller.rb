@@ -56,22 +56,37 @@ class ExpensesController < ApplicationController
 
   def handle_debts(expense)
     users = expense.group.users
-    share_per_user = expense.amount/users.count
+    share_per_user = (expense.amount/users.count).abs
 
+    users_with_debt = Debt.where(group: expense.group, from_user: expense.user, settled: false).pluck(:to_user_id).uniq
     users.each do |user|
       next if user==expense.user
-      debt = Debt.find_by(group: expense.group, from_user: user, to_user: expense.user)
-      if debt
-        if debt.amount > 0 && debt.amount>=share_per_user
-          debt.amount -= share_per_user
-        end
-        debt.expense_id=expense.id
-        debt.save!
+      if users_with_debt.include?(user.id)
+        debt = Debt.find_by(group: expense.group, from_user: expense.user, to_user: user, settled: false)
+          if share_per_user>debt.amount
+            debt.amount=(share_per_user-debt.amount).abs
+            debt.to_user=expense.user
+            debt.from_user=user
+          else
+            debt.amount=debt.amount-share_per_user
+            if debt.amount==0
+              debt.settled=true
+            end
+          end
+          debt.expense_id=expense.id
+          debt.save!
       else
+        debt = Debt.find_by(group: expense.group, from_user: user, to_user: expense.user, settled: false)
+        if debt
+          debt.amount += share_per_user
+          debt.expense_id=expense.id
+          debt.save!
+        else
         debt = Debt.new(group: expense.group, from_user: user, to_user: expense.user)
         debt.amount += share_per_user
         debt.expense_id=expense.id
         debt.save!
+        end
       end
     end
   end

@@ -8,9 +8,10 @@ class Group < ApplicationRecord
   accepts_nested_attributes_for :group_memberships, allow_destroy: true
 
   def settle_debts
-    debts = calculate_debts
+    debts = current_user.debts
 
-    debts.each do |(from_user, to_user), amount|
+    debts.each do |debt|
+      # (from_user, to_user), amount
       next if amount <= 0
 
       Debt.create(
