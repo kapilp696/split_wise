@@ -1,4 +1,4 @@
-<div class="container-fluid w-50 shadow mt-5 rounded border p-4 bg">
+<div class="container-fluid w-75 shadow mt-5 rounded border p-4 bg">
   <h1>Your Account</h1>
 
   <h4><%= @user.email %></h4>
@@ -13,7 +13,7 @@
   <p><%= Expense.all.sum(&:amount) %></p>
 
   <h2>Detailed Debts and Credits</h2>
-  <table class="table table-bordered">
+  <table class="table table-bordered border table-dark">
     <thead>
       <tr>
         <th>From</th>
@@ -27,6 +27,8 @@
     </thead>
     <tbody>
       <% @debts.each do |debt| %>
+      <%= @debts.count %>
+      <%= @credits.count %>
         <tr>
           <td><%= debt.to_user.email %></td>
           <td><%= debt.from_user.email %></td>
@@ -35,7 +37,7 @@
           <td><%= debt.expense.description %></td>
           <td>
             <% unless debt.settled %>
-              <%= link_to 'Settle', settle_debt_path(debt), method: :patch, data: { confirm: 'Are you sure?' } %>
+              <%= link_to 'Settle', settle_debt_path(debt), method: :patch, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-primary" %>
             <% else %>
               Settled
             <% end %>

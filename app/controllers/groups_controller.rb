@@ -10,6 +10,8 @@ class GroupsController < ApplicationController
 
   def new
     @group = current_user.groups.build
+    @group.group_memberships.build
+    @users = User.all
   end
 
   def create
@@ -21,10 +23,15 @@ class GroupsController < ApplicationController
   end
 
   def edit
+    @users = User.where.not(id: @group.users.pluck(:id))
   end
 
   def update
     if @group.update(group_params)
+      # user_ids = params[:user_ids] || []
+      # user_ids.each do |user_id|
+      # @group.group_memberships.create(user_id: user_id)
+      # end
       redirect_to @group, notice: 'Group was successfully updated.'
     else
       render :edit
@@ -62,7 +69,7 @@ class GroupsController < ApplicationController
   end
 
   def group_params
-    params.require(:group).permit(:name)
+    params.require(:group).permit(:name, :user_ids)
 
   end
 end

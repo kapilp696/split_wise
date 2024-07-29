@@ -56,7 +56,7 @@ class ExpensesController < ApplicationController
 
   def handle_update_debts(expense)
     users = expense.group.users
-    updated_amount=params[:expense][:amount].to_i 
+    updated_amount=params[:expense][:amount].to_i
     share_per_user = (updated_amount/users.count).abs
 
     users.each do |user|
@@ -86,7 +86,7 @@ class ExpensesController < ApplicationController
             debt.amount -= share_per_user
             debt.settled = debt.amount.zero?
           end
-          debt.expense = expense.id
+          debt.expense = expense
           debt.save!
       else
         debt = Debt.find_by(group: expense.group, from_user: user, to_user: expense.user, settled: false)

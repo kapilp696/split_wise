@@ -19,9 +19,31 @@
       <%= form.text_field :name, class: "form-control" %>
     </div>
 
+    <h3>Add Users</h3>
+    <%= form.fields_for :group_membership do |f| %>
+      <% @users.each do |user| %>
+        <div class="field form-outline mb-4 text-light">
+          <%= check_box_tag "user_ids[]", user.id, @users %>
+          <%= label_tag user.email %>
+        </div>
+      <% end %>
+    <% end %>
+
     <div class="actions">
-      <%= form.submit, class: "actions mb-2 text-dark btn btn-warning mt-3 " %>
+      <%= form.submit :submit, class: "mb-2 text-light btn btn-dark mt-3" %>
     </div>
+  <% end %>
+
+  <% if @group.persisted? %>
+    <h3>Current Members</h3>
+    <ul>
+      <% @group.users.each do |user| %>
+        <li class="m-2">
+          <%= user.email %>
+          <%= link_to "Remove", remove_member_group_path(@group, user.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "text-light btn btn-dark" %>
+        </li>
+      <% end %>
+    </ul>
   <% end %>
 
   <%= link_to 'Back', groups_path %>

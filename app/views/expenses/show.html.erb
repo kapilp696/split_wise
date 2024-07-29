@@ -1,8 +1,11 @@
 <div class="container-fluid w-50 shadow mt-5 rounded border p-4 bg">
-  Paid by: <%= @expense.user.email %><br>
-  Paid amount: <%= @expense.amount %><br>
-  Splitted among: <br>
+  <p>Paid by: <%= @expense.user.email %><p><br>
+  <p>Paid amount: <%= @expense.amount %></p><br>
+  <p>Splitted among: <br>
+  <ul>
   <% @expense.group.users.each do |user| %>
-    <%= user.email %><br>
+    <li><%= user.email %></li><br>
   <% end %>
+  </ul></p>
+  <%= link_to 'View Expenses', group_expenses_path(@group), class: "text-light btn btn-dark " %>
 </div>

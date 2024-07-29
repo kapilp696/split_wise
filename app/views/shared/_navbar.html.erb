@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg navbar-fixed-top">
+<nav class="navbar navbar-lg py-1 navbar-expand bg navbar-fixed-top">
   <div class="container">
     <%= link_to "Splitwise", root_path, class: "navbar-brand text-white" %>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -14,7 +14,7 @@
             <%= current_user.email %>
           </a>
           <ul class="dropdown-menu">
-            <li><%= link_to "Your Account", user_path(current_user), class: "dropdown-item" %></li>
+            <li><%= link_to "Your Account", edit_user_registration_path(current_user), class: "dropdown-item" %></li>
             <li><%= link_to "Create a group", new_group_path, class: "dropdown-item" %></li>
             <li><%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %></li>
           </ul>

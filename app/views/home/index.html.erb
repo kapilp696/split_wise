@@ -1,15 +1,15 @@
-<%= render "shared/navbar" %>
-
 <div class="h-100 mh-100 p-0 w-100 d-flex ms-auto justify-content-center" id="center_container">
   <div class="border-left border-right border-info shadow-sm w-75 d-flex " id="center_bars">
     <%# left sidebar %>
     <div class="position-relative w-25 float-left z-3" id="left_sidebar">
       <div class="text-start overflow-hidden m-2" id="view_links">
-        <%= link_to "Dashboard", root_path, class: "d-block text-decoration-none p-2 text-dark border-light" %>
-        <%= link_to "Recent Activity", root_path, class: "d-block text-decoration-none p-2 text-dark border-light" %>
-        <%= link_to "All Expenses", root_path, class: "d-block text-decoration-none p-2 text-dark border-light" %>
+        <%= link_to "Debts and Credits", user_path(current_user), class: "d-block text-decoration-none p-2 text-dark border-light" %>
         <div class="tags text-md m-1">
-          <div class="header fw-bold fs-5">Groups</div>
+          <div class="header"><%= link_to "Groups", groups_path, class: "position-relative fw-bold fs-3 text-dark text-decoration-none" %>
+            <a href="/groups/new" class="float-sm-end text-decoration-none m-2 text-secondary">
+              <i class="fa-duotone fa-solid fa-plus"></i>Add
+            </a>
+          </div>
           <% if current_user.groups.any? %>
             <% current_user.groups.each do |group| %>
             <%= link_to group.name, group_path(group), class: "d-block overflow-hidden text-decoration-none p-2 text-dark border border-light" %>
@@ -31,13 +31,12 @@
     </div>
 
     <%# center column %>
-    <div class="position-relative mh-auto m-0 w-50 border border-secondary" id="center_column">
-      center column
-    </div>
-
-    <%# right sidebar %>
-    <div class="position-relative float-right z-3 w-25 bg-primary" id="right_sidebar" style="margin-right: -201px;">
-      right sidebar
+    <div class="position-relative mh-auto m-0 w-75 border border-secondary" id="center_column">
+      <% current_user.groups.each do |group| %>
+        <% group.expenses.each do |expense| %>
+          <%= expense.description %>
+        <% end %>
+      <% end %>
     </div>
   </div>
 </div>

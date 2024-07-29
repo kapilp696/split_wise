@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
   let(:user) { create(:user) }
-  let(:expense) { create(:expense) }
-  let(:debt) { create(:debt) }
+  let(:expense) { create(:expense, user: user) }
+  let(:debt) { create(:debt, expense: expense, from_user: user) }
 
   before do
     sign_in user
@@ -20,13 +20,18 @@ RSpec.describe UsersController, type: :controller do
     end
 
     it 'assigns total_borrowed to @total_borrowed' do
+      byebug
+      # allow(user).to receive(:total_lent).and_return(50.0)
+      # get :show, params: { id: user.id }
+      @total_borrowed=user.total_borrowed
+      expect(assigns(@total_borrowed)).to eq(50.0)
       # expect(assigns(:total_borrowed)).to eq(50.0)
     end
 
     it 'assigns total_lent to @total_lent' do
-      allow(user).to receive(:total_lent).and_return(50.0)
-      get :show, params: { id: user.id }
-      # expect(assigns(:total_lent)).to eq(50.0)
+      # allow(user).to receive(:total_lent).and_return(50.0)
+      # get :show, params: { id: user.id }
+      # expect(assigns(user.total_lent)).to eq(50.0)
     end
 
     it 'assigns the user debts to @debts' do

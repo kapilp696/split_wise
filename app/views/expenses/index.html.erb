@@ -1,24 +1,26 @@
-<h1>Expenses for <%= @group.name %></h1>
-<%= link_to 'New Expense', new_group_expense_path(@group) %>
-<table>
-  <thead>
-    <tr>
-      <th>Description</th>
-      <th>Amount</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @expenses.each do |expense| %>
+<div class="container-fluid w-50 shadow mt-5 rounded border p-4 bg">
+  <h1>Expenses for <%= @group.name %></h1>
+  <%= link_to 'New Expense', new_group_expense_path(@group), class: "text-light btn btn-dark m-2" %>
+  <table class="table table-bordered table-dark ">
+    <thead>
       <tr>
-        <td><%= expense.description %></td>
-        <td><%= number_to_currency(expense.amount) %></td>
-        <td><%= link_to 'Show', group_expense_path(@group, expense) %></td>
-        <td><%= link_to 'Edit', edit_group_expense_path(@group, expense) %></td>
-        <td><%= link_to 'Destroy', group_expense_path(@group, expense), data: {turbo_method: :delete, turbo_confirm: 'Are you sure?' }%></td> 
+        <th>Description</th>
+        <th>Amount</th>
+        <th colspan="3">Actions</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
-<%= link_to 'Back to Group', group_path(@group) %>
+    </thead>
+
+    <tbody>
+      <% @expenses.each do |expense| %>
+        <tr>
+          <td><%= expense.description %></td>
+          <td><%= number_to_currency(expense.amount) %></td>
+          <td><%= link_to 'Show', group_expense_path(@group, expense) %></td>
+          <td><%= link_to 'Edit', edit_group_expense_path(@group, expense) %></td>
+          <td><%= link_to 'Destroy', group_expense_path(@group, expense), data: {turbo_method: :delete, turbo_confirm: 'Are you sure?' }%></td> 
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= link_to 'Back to Group', group_path(@group) %>
+</div>

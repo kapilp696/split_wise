@@ -1,7 +1,7 @@
 <p style="font-weight: bold;">Hello <%= @recipient_email %>,</p>
-<h1><%= @current_user.email %> just invited you to join Splitwise!</h1>
+<h1 style="text-align: center;"><%= @current_user.email %> just invited you to join Splitwise!</h1>
 <div style="text-align: center; justify-content: center;">
-  <%= link_to "Join Splitwise", 'www.google.com', style: "background-color: red;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;border-radius: 2px" %>
+  <%= link_to "Join Splitwise", 'http://localhost:3000/users/sign_up', style: "background-color: red;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;border-radius: 2px;" %>
   <h5>Splitwise makes it easy to split expenses with your friends.</h5>
   <p>
     Use splitwise anytime you split a bill - we will keep track of how much each person owesin total, and make sure that everyone gets paid back.

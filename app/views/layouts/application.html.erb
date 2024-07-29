@@ -11,6 +11,10 @@
   </head>
 
   <body>
+    <% if current_user %>
+    <%= render "shared/navbar" %>
+    <% else %>
+    <% end %>
     <%= yield %>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
