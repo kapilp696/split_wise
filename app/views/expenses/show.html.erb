@@ -1,6 +1,8 @@
-Paid by: <%= @expense.user.email %><br>
-Paid amount: <%= @expense.amount %><br>
-Splitted among: <br>
-<% @expense.group.users.each do |user| %>
-  <%= user.email %><br>
-<% end %>
+<div class="container-fluid w-50 shadow mt-5 rounded border p-4 bg">
+  Paid by: <%= @expense.user.email %><br>
+  Paid amount: <%= @expense.amount %><br>
+  Splitted among: <br>
+  <% @expense.group.users.each do |user| %>
+    <%= user.email %><br>
+  <% end %>
+</div>

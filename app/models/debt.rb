@@ -4,7 +4,10 @@ class Debt < ApplicationRecord
   belongs_to :group, optional: true
   belongs_to :expense
 
-    # Default value for settled
   attribute :settled, :boolean, default: false
 
+  validates :amount, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :from_user_id, presence: true
+  validates :to_user_id, presence: true
+  validates :expense_id, presence: true
 end

@@ -1,0 +1,38 @@
+<div class="container-fluid w-50 shadow mt-5 rounded border p-4 bg">
+  <h1>New Expense for <%= @group.name %></h1>
+
+  <%= form_with(model: [@group, @expense]) do |form| %>
+    <% if @expense.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@expense.errors.count, "error") %> prohibited this expense from being saved:</h2>
+
+        <ul>
+          <% @expense.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field form-outline mb-4 text-light">
+      <%= form.label :description, class: "form-label" %>
+      <%= form.text_field :description, class: "form-control"%>
+    </div>
+
+    <div class="field form-outline mb-4 text-light">
+      <%= form.label :amount, class: "form-label" %>
+      <%= form.number_field :amount, class: "form-control" %>
+    </div>
+
+    <div class="field form-outline mb-4 text-light">
+      <%= form.label :user_id, "Select Payer", class: "form-label" %>
+      <%= form.select  :user_id, options_from_collection_for_select(@group.users, "id", "email"), class: "form-control" %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit, class: "actions mb-2 text-dark btn btn-warning mt-3 " %>
+    </div>
+  <% end %>
+
+  <%= link_to 'Back', group_expenses_path(@group) %>
+</div>

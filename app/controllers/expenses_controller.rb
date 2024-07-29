@@ -27,6 +27,7 @@ class ExpensesController < ApplicationController
   def edit; end
 
   def update
+    handle_update_debts(@expense)
     if @expense.update(expense_params)
       redirect_to group_expense_path(@group, @expense), notice: 'Expense was successfully updated.'
     else
@@ -53,6 +54,20 @@ class ExpensesController < ApplicationController
     params.require(:expense).permit(:amount, :description, :user_id)
   end
 
+  def handle_update_debts(expense)
+    users = expense.group.users
+    updated_amount=params[:expense][:amount].to_i 
+    share_per_user = (updated_amount/users.count).abs
+
+    users.each do |user|
+      debt = Debt.find_by(group: expense.group, from_user: user, to_user: expense.user, settled: false)
+      if debt
+        debt.amount=share_per_user
+        debt.expense_id=expense.id
+        debt.save!
+      end
+    end
+  end
 
   def handle_debts(expense)
     users = expense.group.users
@@ -68,23 +83,21 @@ class ExpensesController < ApplicationController
             debt.to_user=expense.user
             debt.from_user=user
           else
-            debt.amount=debt.amount-share_per_user
-            if debt.amount==0
-              debt.settled=true
-            end
+            debt.amount -= share_per_user
+            debt.settled = debt.amount.zero?
           end
-          debt.expense_id=expense.id
+          debt.expense = expense.id
           debt.save!
       else
         debt = Debt.find_by(group: expense.group, from_user: user, to_user: expense.user, settled: false)
         if debt
           debt.amount += share_per_user
-          debt.expense_id=expense.id
+          debt.expense = expense
           debt.save!
         else
         debt = Debt.new(group: expense.group, from_user: user, to_user: expense.user)
-        debt.amount += share_per_user
-        debt.expense_id=expense.id
+        debt.amount = share_per_user
+        debt.expense = expense
         debt.save!
         end
       end

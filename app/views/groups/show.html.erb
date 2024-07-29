@@ -1,26 +1,8 @@
-<h1><%= @group.name %></h1>
+<div class="container-fluid w-50 shadow mt-5 rounded border p-4 bg">
+  <h1><%= @group.name %></h1>
 
-<h2>Debts</h2>
-<table>
-  <thead>
-    <tr>
-      <th>From</th>
-      <th>To</th>
-      <th>Amount</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @debts.each do |(from_user, to_user), amount| %>
-      <% next if amount <= 0 %>
-      <tr>
-        <td><%= from_user.email %></td>
-        <td><%= to_user.email %></td>
-        <td><%= number_to_currency(amount) %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<%= link_to 'View Expenses', group_expenses_path(@group) %> |
-<%= link_to 'Edit', edit_group_path(@group) %> |
-<%= link_to 'Back', groups_path %>
+  <%= link_to 'Manage Members', manage_members_group_path(@group) %> |
+  <%= link_to 'View Expenses', group_expenses_path(@group) %> |
+  <%= link_to 'Edit', edit_group_path(@group) %> |
+  <%= link_to 'Back', groups_path %>
+</div>

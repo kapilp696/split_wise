@@ -1,5 +1,4 @@
 class GroupsController < ApplicationController
-  # before_action :set_group
   before_action :set_group, only: [:show, :edit, :update, :destroy, :manage_members, :add_members, :remove_member]
 
   def index
@@ -63,7 +62,6 @@ class GroupsController < ApplicationController
   end
 
   def group_params
-    # params.require(:group).permit(:name, group_memberships_attributes: [:id, :user_id])
     params.require(:group).permit(:name)
 
   end

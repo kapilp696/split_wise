@@ -54,6 +54,7 @@ group :development, :test do
   # gem "debug", platforms: %i[ mri windows ]
   gem "debug", platforms: %i[ mswin mswin64 mingw x64_mingw jruby ]
   gem 'dotenv'
+  gem 'rspec-rails'
 end
 
 group :development do
@@ -71,6 +72,10 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem 'shoulda-matchers', '~> 5.0'
+  gem 'factory_bot_rails'
+  gem 'faker'
+  gem 'rails-controller-testing'
 end
 
 gem "devise", "~> 4.9"
