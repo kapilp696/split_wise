@@ -29,6 +29,18 @@
       <% end %>
     <% end %>
 
+    <h3>Group Members</h3>
+    <div id="group_memberships">
+      <%= form.fields_for :group_memberships do |membership_form| %>
+        <%= render 'group_membership_fields', f: membership_form %>
+      <% end %>
+    </div>
+
+    <div class="links">
+      <%= link_to_add_association 'Add User', form, :group_memberships %>
+    </div>
+
+
     <div class="actions">
       <%= form.submit :submit, class: "mb-2 text-light btn btn-dark mt-3" %>
     </div>

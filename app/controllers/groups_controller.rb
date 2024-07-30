@@ -23,7 +23,11 @@ class GroupsController < ApplicationController
   end
 
   def edit
-    @users = User.where.not(id: @group.users.pluck(:id))
+    # @group.group_memberships.build
+    # @users = User.where.not(id: @group.users.pluck(:id))
+    existing_user_ids = @group.users.pluck(:id)
+    @available_users = User.where.not(id: existing_user_ids)
+    @group.group_memberships.build
   end
 
   def update
@@ -69,7 +73,8 @@ class GroupsController < ApplicationController
   end
 
   def group_params
-    params.require(:group).permit(:name, :user_ids)
+    # params.require(:group).permit(:name, :user_ids)
+    params.require(:group).permit(:name, group_memberships_attributes: [:id, :user_id, :_destroy])
 
   end
 end
