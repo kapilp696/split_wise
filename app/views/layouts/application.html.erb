@@ -8,13 +8,12 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-    <%= javascript_include_tag 'nested_form' %>
+    <%= javascript_include_tag "groups.js" %>
   </head>
 
   <body>
-    <% if current_user %>
-    <%= render "shared/navbar" %>
-    <% else %>
+    <% unless current_user && @hide_navbar %>
+      <%= render "shared/navbar" %>
     <% end %>
     <%= yield %>
     <p class="notice"><%= notice %></p>

@@ -4,6 +4,12 @@ class ExpensesController < ApplicationController
 
   def index
     @expenses = @group.expenses
+    @hide_navbar=true
+
+    respond_to do |format|
+      format.html #index.html.erb
+      format.js { render partial: 'expenses/index', locals: {expenses: @expenses} }
+    end
   end
 
   def show

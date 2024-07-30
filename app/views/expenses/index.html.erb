@@ -1,11 +1,12 @@
-<div class="container-fluid w-50 shadow mt-5 rounded border p-4 bg">
+<div class="container-fluid w-100 h-100 shadow mt-5 rounded border p-4 bg">
   <h1>Expenses for <%= @group.name %></h1>
-  <%= link_to 'New Expense', new_group_expense_path(@group), class: "text-light btn btn-dark m-2" %>
+  <%= link_to 'New Expense', new_group_expense_path(@group), class: "text-light btn btn-danger m-2" %>
   <table class="table table-bordered table-dark ">
     <thead>
       <tr>
         <th>Description</th>
         <th>Amount</th>
+        <th>Paid by</th>
         <th colspan="3">Actions</th>
       </tr>
     </thead>
@@ -15,6 +16,7 @@
         <tr>
           <td><%= expense.description %></td>
           <td><%= number_to_currency(expense.amount) %></td>
+          <td><%= expense.user.email %></td>
           <td><%= link_to 'Show', group_expense_path(@group, expense) %></td>
           <td><%= link_to 'Edit', edit_group_expense_path(@group, expense) %></td>
           <td><%= link_to 'Destroy', group_expense_path(@group, expense), data: {turbo_method: :delete, turbo_confirm: 'Are you sure?' }%></td> 
@@ -22,5 +24,5 @@
       <% end %>
     </tbody>
   </table>
-  <%= link_to 'Back to Group', group_path(@group) %>
+  <%= link_to 'Show Group', group_path(@group),class: "btn btn-dark text-light" %>
 </div>

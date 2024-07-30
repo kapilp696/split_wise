@@ -1,4 +1,4 @@
-<div class="h-100 mh-100 p-0 w-100 d-flex ms-auto justify-content-center" id="center_container">
+<div class="h-100 mh-100 p-0 w-100 d-flex ms-auto justify-content-center" id="center">
   <div class="border-left border-right border-info shadow-sm w-75 d-flex " id="center_bars">
     <%# left sidebar %>
     <div class="position-relative w-25 float-left z-3" id="left_sidebar">
@@ -10,11 +10,13 @@
               <i class="fa-duotone fa-solid fa-plus"></i>Add
             </a>
           </div>
-          <% if current_user.groups.any? %>
-            <% current_user.groups.each do |group| %>
-            <%= link_to group.name, group_path(group), class: "d-block overflow-hidden text-decoration-none p-2 text-dark border border-light" %>
+          <div class="group">
+            <% if current_user.groups.any? %>
+              <% current_user.groups.each do |group| %>
+              <%= link_to group.name, group_expenses_path(group), class: "group-link d-block overflow-hidden text-decoration-none p-2 text-dark border border-light" %>
+              <% end %>
             <% end %>
-          <% end %>
+          </div>
         </div>
         <div class="border border-secondary">
           <div class="p-2 border border-secondary" style="background-color: #5bc5a7;">Invite friends</div>
@@ -31,12 +33,8 @@
     </div>
 
     <%# center column %>
-    <div class="position-relative mh-auto m-0 w-75 border border-secondary" id="center_column">
-      <% current_user.groups.each do |group| %>
-        <% group.expenses.each do |expense| %>
-          <%= expense.description %>
-        <% end %>
-      <% end %>
+    <div class="position-relative m-2 w-100 border border-light" id="center_bar">
+      <div id="center_container"></div>
     </div>
   </div>
 </div>

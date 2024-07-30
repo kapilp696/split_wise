@@ -1,9 +1,10 @@
 <div class="container-fluid w-50 shadow mt-5 rounded border p-4 bg">
-  <h1><%= @group.name %></h1>
-
-  <%= link_to 'Manage Members', manage_members_group_path(@group), class: "text-light btn btn-dark " %>
-  <%= link_to 'View Expenses', group_expenses_path(@group), class: "text-light btn btn-dark " %>
-  <%= link_to 'Edit Group', edit_group_path(@group), class: "text-light btn btn-dark " %>
-  <%= link_to 'Destroy Group', @group, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: "text-light btn btn-dark" %>
-  <%= link_to 'Back', root_path, class: "text-light btn btn-dark" %>
+  <h1><%= @group.name.capitalize %></h1>
+  <div>
+    <%= link_to 'Edit Group', edit_group_path(@group), class: "text-light btn btn-dark " %>
+    <%= link_to 'Destroy Group', @group, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: "text-light btn btn-dark" %>
+  </div>
+  <div>
+    <%= link_to 'Back', root_path, class: "text-light btn btn-dark m-2" %>
+  </div>
 </div>
