@@ -85,3 +85,5 @@ gem "devise", "~> 4.9"
 gem "byebug", "~> 11.1", :groups => [:development, :test]
 
 gem "font-awesome-sass"
+
+gem "simplecov", "~> 0.22.0"

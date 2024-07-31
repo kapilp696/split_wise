@@ -1,45 +1,27 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
 # split_wise
 
+## set up instructions
+1. Clone the repository: 
+  git clone "https://github.com/kapilp696/split_wise_clone"
+  cd split_wise
 
+2. Install dependencies:
+  bundle install
 
-    <h3>Add Users</h3>
-    <%= form.fields_for :group_membership do |f| %>
-      <% @users.each do |user| %>
-        <div class="field form-outline mb-4 text-light">
-          <%= check_box_tag "user_ids[]", user.id, @users %>
-          <%= label_tag user.email %>
-        </div>
-      <% end %>
-    <% end %>
+3. Set up the database:
+  rails db:create
+  rails db:migrate
 
+4. Start the server:
+  rails s
 
-            <div class="nested-fields">
-          <div class="field">
-            <%= user_builder.label :user_id, 'Select User: ' %>
-            <%= user_builder.collection_select :user_id, @users, :id, :email, { include_blank: true} %>
-          </div>
-        </div>
+5. Open the browser and navigate to:
+  'http://lovalhost:3000'
+
+6. To run the test suite, run the following command:
+  bundle exec rspec
+
+Addon:
+  Devise gem is used and bootstrap for styling.

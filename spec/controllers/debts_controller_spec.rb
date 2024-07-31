@@ -3,11 +3,11 @@ require 'rails_helper'
 RSpec.describe DebtsController, type: :controller do
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
-  let(:group) { create(:group, user: user) }
+  let(:group) { create(:group) }
   let(:debt) { create(:debt, group: group, from_user: other_user, to_user: user) }
 
   before do
-    sign_in user 
+    sign_in user
   end
 
   describe "POST #settle" do

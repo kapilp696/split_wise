@@ -13,7 +13,7 @@ RSpec.describe InviteNotificationMailer, type: :mailer do
     end
 
     it 'renders the body' do
-      # expect(mail.body.encoded).to match("Hello #{recipient_email}, #{sender} just invited you to join Splitwise! Splitwise makes it easy to split expenses with your friends.     Use splitwise anytime you split a bill - we will keep track of how much each person owesin total, and make sure that everyone gets paid back.")
+      expect(mail.body.encoded).to match(sender.email)
     end
   end
 end

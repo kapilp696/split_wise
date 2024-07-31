@@ -2,7 +2,5 @@ class GroupMembership < ApplicationRecord
   belongs_to :user
   belongs_to :group
 
-  # validates :user_id, presence: true, uniqueness: true
   validates :user_id, presence: true, uniqueness: { scope: :group_id, message: "is already a member of this group" }
-
 end

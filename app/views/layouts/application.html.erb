@@ -12,7 +12,7 @@
   </head>
 
   <body>
-    <% unless current_user && @hide_navbar %>
+    <% if current_user && !@hide_navbar %>
       <%= render "shared/navbar" %>
     <% end %>
     <%= yield %>

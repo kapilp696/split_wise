@@ -18,10 +18,10 @@ class GroupsController < ApplicationController
 
   def create
     @group=Group.new(group_params)
-    if @group.save!
+    if @group.save
       redirect_to @group, notice: 'Group was successfully created.'
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -40,12 +40,6 @@ class GroupsController < ApplicationController
   def destroy
     @group.destroy
     redirect_to root_path, notice: 'Group was successfully destroyed.'
-  end
-
-  def remove_member
-    membership = @group.group_memberships.find_by(user_id: params[:user_id])
-    membership.destroy if membership
-    redirect_to manage_members_group_path(@group), notice: 'Member was successfully removed.'
   end
 
   private

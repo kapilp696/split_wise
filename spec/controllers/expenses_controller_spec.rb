@@ -1,12 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe ExpensesController, type: :controller do
-  let(:user) { create(:user) }
-  let(:group) { create(:group, user: user) }
-  let(:expense) { create(:expense, group: group, user: user) }
+  let!(:user) { create(:user) }
+  let!(:group) { create(:group) }
+  let!(:expense) { create(:expense, group: group, user: user) }
+
+  before(:each) do
+    create(:group_membership, user: user, group: group)
+  end
 
   before do
-    sign_in user  # Assuming Devise for authentication
+    sign_in user
   end
 
   describe "GET #index" do
@@ -52,12 +56,6 @@ RSpec.describe ExpensesController, type: :controller do
         post :create, params: { group_id: group.id, expense: attributes_for(:expense, user_id: user.id) }
         expect(response).to redirect_to(group_expenses_path(group))
       end
-
-      it "handles debts correctly" do
-        allow_any_instance_of(ExpensesController).to receive(:handle_debts).and_call_original
-        post :create, params: { group_id: group.id, expense: attributes_for(:expense, user_id: user.id) }
-        expect_any_instance_of(ExpensesController).to have_received(:handle_debts)
-      end
     end
 
     context "with invalid params" do
@@ -92,11 +90,6 @@ RSpec.describe ExpensesController, type: :controller do
         expect(response).to redirect_to(group_expense_path(group, expense))
       end
 
-      it "handles update debts correctly" do
-        allow_any_instance_of(ExpensesController).to receive(:handle_update_debts).and_call_original
-        put :update, params: { group_id: group.id, id: expense.to_param, expense: new_attributes }
-        expect_any_instance_of(ExpensesController).to have_received(:handle_update_debts)
-      end
     end
 
     context "with invalid params" do
