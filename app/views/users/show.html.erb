@@ -27,8 +27,6 @@
     </thead>
     <tbody>
       <% @debts.each do |debt| %>
-      <%= @debts.count %>
-      <%= @credits.count %>
         <tr>
           <td><%= debt.to_user.email %></td>
           <td><%= debt.from_user.email %></td>
